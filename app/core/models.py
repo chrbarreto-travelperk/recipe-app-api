@@ -60,3 +60,25 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Recipe(models.Model):
+    """Recipe object"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    title = models.CharField(max_length=255)
+    time_minutes = models.IntegerField()
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    link = models.CharField(max_length=255, blank=True)
+    # if no value
+    # is provided, sets to blank string, this way you dont have to
+    # check for null and blank
+    ingredients = models.ManyToManyField('Ingredient')
+    # name of the class, could be the class itself, but this way
+    # they would have to be in order
+    tags = models.ManyToManyField('Tag')
+
+    def __str__(self):
+        return self.title
